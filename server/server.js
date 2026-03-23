@@ -8,20 +8,16 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables from .env file
 dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors()); // Allow frontend to communicate with backend
-app.use(express.json()); // Parse JSON request bodies
+app.use(cors());
+app.use(express.json());
 
-// Initialize Gemini Client with secure API Key from .env
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// The Debug Endpoint
 app.post('/api/debug', async (req, res) => {
   try {
     const { buggyCode, language } = req.body;
@@ -31,34 +27,37 @@ app.post('/api/debug', async (req, res) => {
     }
 
     const languageContext = language ? `The code is written in ${language}.\n` : '';
-    const prompt = `You are a senior developer with 10+ years of experience.
-Your task is to debug the following code. Identify the bugs, fix them, and explain them in simple, everyday language that a junior developer can understand.
+    const prompt = `Analyze the user's code. Return ONLY a JSON object with this keys: 'fixed_code' (string), 'analysis' (object containing 'issues', 'how_to_fix', 'suggestions' as arrays of strings). Use professional English.
 
 ${languageContext}Code to debug:
 ${buggyCode}
 `;
 
-    // Make the request using the gemini-2.5-flash model
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.1-flash-lite-preview",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            fixedCode: {
+            fixed_code: {
               type: Type.STRING,
-              description: "The corrected code here, fully functioning",
+              description: "The complete, corrected code.",
             },
-            explanation: {
-              type: Type.STRING,
-              description: "Step-by-step breakdown of the error and how to avoid it in the future, carefully formatted in beautiful markdown",
-            },
+            analysis: {
+              type: Type.OBJECT,
+              properties: {
+                issues: { type: Type.ARRAY, items: { type: Type.STRING } },
+                how_to_fix: { type: Type.ARRAY, items: { type: Type.STRING } },
+                suggestions: { type: Type.ARRAY, items: { type: Type.STRING } }
+              },
+              required: ["issues", "how_to_fix", "suggestions"]
+            }
           },
-          required: ["fixedCode", "explanation"],
+          required: ["fixed_code", "analysis"],
         },
-        temperature: 0.1,
+        temperature: 0.2,
       },
     });
 
@@ -67,7 +66,6 @@ ${buggyCode}
 
     const result = JSON.parse(text);
 
-    // Send the result back to the frontend
     res.json(result);
   } catch (error) {
     console.error("AI API Error:", error);
@@ -75,15 +73,17 @@ ${buggyCode}
   }
 });
 
-// Start the server
-// Serve static frontend in production
+app.use('/defix-v2', express.static(path.join(__dirname, '../dist')));
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// Route all other requests to the frontend
+app.get('/defix-v2/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 app.listen(port, () => {
-  console.log(`DeFix unified backend/frontend running on port ${port}`);
+  console.log(`DeFixs backend running on port ${port}`);
 });

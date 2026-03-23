@@ -33,8 +33,8 @@ const lightTheme = {
   ".cm-matchingBracket": { backgroundColor: "rgba(59,130,246,0.15)", outline: "1px solid rgba(59,130,246,0.3)" }
 };
 
-const appDarkTheme = createTheme({ theme: "dark", settings: darkTheme, styles: [ { tag: t.keyword, color: "#c084fc" }, { tag: t.string, color: "#86efac" }, { tag: t.number, color: "#fbbf24" }, { tag: t.comment, color: "#6b7280", fontStyle: "italic" }, { tag: t.function(t.variableName), color: "#60a5fa" }, { tag: t.variableName, color: "#e4e4e7" }, { tag: t.typeName, color: "#67e8f9" }, { tag: t.tagName, color: "#f87171" }, { tag: t.attributeName, color: "#fbbf24" }, { tag: t.operator, color: "#94a3b8" }, { tag: t.punctuation, color: "#94a3b8" }, { tag: t.propertyName, color: "#60a5fa" }, { tag: t.bool, color: "#fbbf24" }, { tag: t.null, color: "#f87171" }, { tag: t.className, color: "#67e8f9" }, { tag: t.definition(t.variableName), color: "#93c5fd" } ] });
-const appLightTheme = createTheme({ theme: "light", settings: lightTheme, styles: [ { tag: t.keyword, color: "#7c3aed" }, { tag: t.string, color: "#16a34a" }, { tag: t.number, color: "#d97706" }, { tag: t.comment, color: "#9ca3af", fontStyle: "italic" }, { tag: t.function(t.variableName), color: "#2563eb" }, { tag: t.variableName, color: "#1e293b" }, { tag: t.typeName, color: "#0891b2" }, { tag: t.tagName, color: "#dc2626" }, { tag: t.attributeName, color: "#d97706" }, { tag: t.operator, color: "#64748b" }, { tag: t.punctuation, color: "#64748b" }, { tag: t.propertyName, color: "#2563eb" }, { tag: t.bool, color: "#d97706" }, { tag: t.null, color: "#dc2626" }, { tag: t.className, color: "#0891b2" }, { tag: t.definition(t.variableName), color: "#3b82f6" } ] });
+const appDarkTheme = createTheme({ theme: "dark", settings: darkTheme, styles: [{ tag: t.keyword, color: "#c084fc" }, { tag: t.string, color: "#86efac" }, { tag: t.number, color: "#fbbf24" }, { tag: t.comment, color: "#6b7280", fontStyle: "italic" }, { tag: t.function(t.variableName), color: "#60a5fa" }, { tag: t.variableName, color: "#e4e4e7" }, { tag: t.typeName, color: "#67e8f9" }, { tag: t.tagName, color: "#f87171" }, { tag: t.attributeName, color: "#fbbf24" }, { tag: t.operator, color: "#94a3b8" }, { tag: t.punctuation, color: "#94a3b8" }, { tag: t.propertyName, color: "#60a5fa" }, { tag: t.bool, color: "#fbbf24" }, { tag: t.null, color: "#f87171" }, { tag: t.className, color: "#67e8f9" }, { tag: t.definition(t.variableName), color: "#93c5fd" }] });
+const appLightTheme = createTheme({ theme: "light", settings: lightTheme, styles: [{ tag: t.keyword, color: "#7c3aed" }, { tag: t.string, color: "#16a34a" }, { tag: t.number, color: "#d97706" }, { tag: t.comment, color: "#9ca3af", fontStyle: "italic" }, { tag: t.function(t.variableName), color: "#2563eb" }, { tag: t.variableName, color: "#1e293b" }, { tag: t.typeName, color: "#0891b2" }, { tag: t.tagName, color: "#dc2626" }, { tag: t.attributeName, color: "#d97706" }, { tag: t.operator, color: "#64748b" }, { tag: t.punctuation, color: "#64748b" }, { tag: t.propertyName, color: "#2563eb" }, { tag: t.bool, color: "#d97706" }, { tag: t.null, color: "#dc2626" }, { tag: t.className, color: "#0891b2" }, { tag: t.definition(t.variableName), color: "#3b82f6" }] });
 
 const isDark = document.documentElement.className.includes('dark');
 const activeTheme = isDark ? appDarkTheme : appLightTheme;
@@ -57,18 +57,17 @@ function renderLanguages() {
       <button
         type="button"
         data-lang="${val}"
-        class="lang-option w-full text-left px-3 py-2 rounded-md text-[13px] font-medium transition-colors flex items-center justify-between cursor-pointer ${
-          isSelected
-            ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
-            : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5"
-        }"
+        class="lang-option w-full text-left px-3 py-2 rounded-md text-[13px] font-medium transition-colors flex items-center justify-between cursor-pointer ${isSelected
+        ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5"
+      }"
       >
         <span>${lang}</span>
         ${isSelected ? '<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>' : ''}
       </button>
     `;
   }).join('');
-  
+
   document.querySelectorAll('.lang-option').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const lang = e.currentTarget.getAttribute('data-lang');
@@ -97,7 +96,7 @@ function closeDropdown() {
   dropdownArrow.classList.remove('rotate-180');
 }
 
-if(dropdownBtn) {
+if (dropdownBtn) {
   dropdownBtn.addEventListener('click', toggleDropdown);
   renderLanguages();
   document.addEventListener("mousedown", (e) => {
@@ -123,9 +122,9 @@ const updateListener = EditorView.updateListener.of((update) => {
 const inputState = EditorState.create({
   doc: "",
   extensions: [
-    basicSetup, 
-    javascript(), 
-    activeTheme, 
+    basicSetup,
+    javascript(),
+    activeTheme,
     EditorView.lineWrapping,
     placeholder("// Paste your buggy code here...\nfunction calculateTotal(items) {\n  return items.map(i => i.price).reduce((a,b) => a+b)\n}"),
     updateListener
@@ -147,9 +146,9 @@ const outputLoading = document.getElementById('output-loading');
 
 let lastGeneratedCode = "";
 
-if(btnCopy) {
+if (btnCopy) {
   btnCopy.addEventListener('click', () => {
-    if(!lastGeneratedCode) return;
+    if (!lastGeneratedCode) return;
     navigator.clipboard.writeText(lastGeneratedCode);
     btnCopy.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i><span>Copied!</span>`;
     if (window.lucide) window.lucide.createIcons();
@@ -165,7 +164,7 @@ function initParticles() {
   const canvas = document.getElementById('particles-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  
+
   let particlesArray = [];
   const mouse = { x: null, y: null, radius: 150 };
 
@@ -275,14 +274,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const scrollToEditorBtn = document.getElementById('scroll-to-editor');
-if(scrollToEditorBtn) {
+if (scrollToEditorBtn) {
   scrollToEditorBtn.addEventListener('click', () => {
     document.getElementById('code-editor-section').scrollIntoView({ behavior: 'smooth' });
   });
 }
 
 const scrollToHowItWorksBtn = document.getElementById('scroll-to-how-it-works');
-if(scrollToHowItWorksBtn) {
+if (scrollToHowItWorksBtn) {
   scrollToHowItWorksBtn.addEventListener('click', () => {
     document.getElementById('how-it-works-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
@@ -307,7 +306,7 @@ btnDebug.addEventListener('click', async () => {
   btnDebugText.innerText = 'Debugging...';
   btnDebugIcon.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
   errorBanner.classList.add('hidden');
-  
+
   explanationEmpty.classList.add('hidden');
   explanationContent.classList.remove('hidden');
   explanationContent.innerHTML = `
@@ -344,18 +343,42 @@ btnDebug.addEventListener('click', async () => {
     }
 
     const data = await res.json();
-    
+
     // Set Output Panel
-    lastGeneratedCode = data.fixedCode || '';
+    lastGeneratedCode = data.fixed_code || '';
     outputCodeEle.innerText = lastGeneratedCode;
 
     outputLoading.classList.add('hidden');
     outputPre.classList.remove('hidden');
 
-    if (data.explanation) {
-      explanationContent.innerHTML = DOMPurify.sanitize(marked.parse(data.explanation));
+    if (data.analysis) {
+      const { issues, how_to_fix, suggestions } = data.analysis;
+      const createList = (items) => items && items.length > 0
+        ? `<ul class="list-none pl-4 space-y-2 text-[14px] text-gray-700 dark:text-gray-300 mt-3 mb-1">
+            ${items.map(item => `<li>- ${item}</li>`).join('')}
+           </ul>`
+        : '<p class="text-[14px] text-gray-500 mt-2 mb-1">None.</p>';
+
+      explanationContent.innerHTML = `
+        <div class="flex flex-col gap-6 font-sans">
+          <div>
+            <h4 class="font-semibold text-[#2255aa] text-[15px]">+ Issues:</h4>
+            ${createList(issues)}
+          </div>
+          <div class="w-full h-[1px] bg-[#eaecf0] dark:bg-white/10"></div>
+          <div>
+            <h4 class="font-semibold text-[#2255aa] text-[15px]">+ How to fix:</h4>
+            ${createList(how_to_fix)}
+          </div>
+          <div class="w-full h-[1px] bg-[#eaecf0] dark:bg-white/10"></div>
+          <div>
+            <h4 class="font-semibold text-[#2255aa] text-[15px]">+ Improvement and Suggestion ( tips to avoid the same mistakes ):</h4>
+            ${createList(suggestions)}
+          </div>
+        </div>
+      `;
     } else {
-      explanationContent.innerHTML = '<p>No explanation provided.</p>';
+      explanationContent.innerHTML = '<p>No analysis provided.</p>';
     }
   } catch (err) {
     errorBanner.classList.remove('hidden');
@@ -363,7 +386,7 @@ btnDebug.addEventListener('click', async () => {
     explanationContent.innerHTML = '';
     explanationEmpty.classList.remove('hidden');
     explanationContent.classList.add('hidden');
-    
+
     outputLoading.classList.add('hidden');
     outputPre.classList.add('hidden');
     outputEmpty.classList.remove('hidden');

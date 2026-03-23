@@ -1,4 +1,4 @@
-# DeFix - Vanilla JS Code Debugger
+# DeFixs - Vanilla JS Code Debugger
 
 A purely Vanilla JavaScript and Node.js application for debugging code instantly with Gemini AI.
 
