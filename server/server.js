@@ -73,10 +73,10 @@ ${buggyCode}
   }
 });
 
-app.use('/defix-v2', express.static(path.join(__dirname, '../dist')));
+app.use('/defixs-defix-v3-', express.static(path.join(__dirname, '../dist')));
 app.use(express.static(path.join(__dirname, '../dist')));
 
-app.get('/defix-v2/*', (req, res) => {
+app.get('/defixs-defix-v3-/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
