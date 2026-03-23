@@ -306,23 +306,29 @@ if (scrollToHowItWorksBtn) {
 const btnDebug = document.getElementById('btn-debug');
 const btnDebugText = document.getElementById('btn-debug-text');
 const btnDebugIcon = document.getElementById('btn-debug-icon');
-const errorBanner = document.getElementById('error-banner');
-const errorMessage = document.getElementById('error-message');
-const explanationContent = document.getElementById('explanation-content');
-const explanationEmpty = document.getElementById('explanation-empty');
+  const errorBanner = document.getElementById('error-banner');
+  const errorMessage = document.getElementById('error-message');
+  const explanationContent = document.getElementById('explanation-content');
+  const explanationEmpty = document.getElementById('explanation-empty');
+  const orbitalLoader = document.getElementById('orbital-loader');
 
-btnDebug.addEventListener('click', async () => {
-  const code = inputEditor.state.doc.toString();
-  if (!code.trim()) return;
+  btnDebug.addEventListener('click', async () => {
+    const code = inputEditor.state.doc.toString();
+    if (!code.trim()) return;
 
-  // Set Loading UI State
-  btnDebug.disabled = true;
-  btnCopy.disabled = true;
-  btnDebugText.innerText = 'Debugging...';
-  btnDebugIcon.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
-  errorBanner.classList.add('hidden');
+    // Set Loading UI State
+    btnDebug.disabled = true;
+    btnCopy.disabled = true;
+    btnDebugText.innerText = 'Debugging...';
+    btnDebugIcon.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+    errorBanner.classList.add('hidden');
 
-  explanationEmpty.classList.add('hidden');
+    if (orbitalLoader) {
+      orbitalLoader.classList.remove('hidden');
+      orbitalLoader.classList.add('flex');
+    }
+
+    explanationEmpty.classList.add('hidden');
   explanationContent.classList.remove('hidden');
   explanationContent.innerHTML = `
     <div class="h-full flex flex-col gap-4 animate-pulse">
@@ -361,7 +367,7 @@ btnDebug.addEventListener('click', async () => {
 
     // Set Output Panel
     lastGeneratedCode = data.fixed_code || '';
-    
+
     // Update the CodeMirror instance safely without recreating
     outputEditor.dispatch({
       changes: {
@@ -419,5 +425,10 @@ btnDebug.addEventListener('click', async () => {
     btnDebugText.innerText = 'Debug Code';
     btnDebugIcon.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i>';
     if (window.lucide) window.lucide.createIcons();
+
+    if (orbitalLoader) {
+      orbitalLoader.classList.add('hidden');
+      orbitalLoader.classList.remove('flex');
+    }
   }
 });

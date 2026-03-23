@@ -27,7 +27,30 @@ app.post('/api/debug', async (req, res) => {
     }
 
     const languageContext = language ? `The code is written in ${language}.\n` : '';
-    const prompt = `Analyze the user's code. Return ONLY a JSON object with this keys: 'fixed_code' (string), 'analysis' (object containing 'issues', 'how_to_fix', 'suggestions' as arrays of strings). Use professional English.
+    const prompt = `Act as a Senior Full-Stack Developer with 10+ years of experience. You are the analysis engine for Defix-v2.
+
+STRICT RULE: Return ONLY a valid JSON object. No markdown, no backticks.
+
+JSON STRUCTURE:
+{
+  "fixed_code": "Full corrected code here",
+  "analysis": {
+    "issues": ["Detailed text here", "Detailed text here"],
+    "how_to_fix": ["Detailed text here", "Detailed text here"],
+    "suggestions": ["Detailed text here", "Detailed text here"]
+  }
+}
+
+CRITICAL FORMATTING RULES:
+1. THE "WHY": My UI/CSS is already programmed to automatically put a dash (-) on the screen.
+2. NO DASHES: Do NOT start any string with a dash (-), a double dash (--), a dot (.), or a space.
+   BAD: "- The variable is wrong"
+   GOOD: "The variable is wrong"
+3. RAW TEXT ONLY: Every sentence must start directly with a Capital Letter. Do not use any bullet point symbols or numbering.
+4. DETAIL: Provide long, deep, and helpful explanations. Do not be short.
+5. LANGUAGE: Use simple, professional English.
+
+If you add a dash, it causes a "double dash" glitch in my UI. Only send the raw text sentences.
 
 ${languageContext}Code to debug:
 ${buggyCode}

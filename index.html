@@ -190,7 +190,7 @@
 
       <!-- Editor Section (Ported from CodeEditor.jsx) -->
       <div id="code-editor-section"
-        class="flex flex-col h-[300px] lg:h-[340px] border border-gray-200 dark:border-white/15 rounded-xl overflow-hidden bg-[#f4f4f4] dark:bg-[#2f2f2f] shadow-sm hover:border-[var(--color-primary-400)]/50 focus-within:ring-1 focus-within:ring-[var(--color-primary-500)] focus-within:border-[var(--color-primary-500)] focus-within:shadow-[0_0_25px_#2255aa40] transition-all duration-300 relative scroll-mt-20 group"
+        class="flex flex-col h-[300px] lg:h-[340px] border border-gray-200 dark:border-white/15 rounded-xl overflow-hidden bg-[#f4f4f4] dark:bg-[#2f2f2f] shadow-sm transition-all duration-200 relative scroll-mt-20"
         data-aos="fade-up" data-aos-delay="600">
         <div
           class="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--color-primary-500)]/50 to-transparent opacity-70 z-20">
@@ -200,7 +200,7 @@
           <div class="flex items-center gap-2">
             <div class="w-2 h-2 rounded-full bg-[var(--color-primary-500)] animate-pulse"></div>
             <span
-              class="text-[13px] font-bold text-[var(--color-primary-600)] dark:text-[var(--color-primary-400)] tracking-tight uppercase">
+              class="text-[13px] font-bold text-[var(--color-primary-700)] dark:text-[var(--color-primary-400)] tracking-tight uppercase">
               Input Source Code Here
             </span>
           </div>
@@ -233,6 +233,73 @@
           class="flex-1 w-full relative h-[calc(100%-49px)] overflow-hidden [&_.cm-editor]:h-full [&_.cm-scroller]:overflow-auto [&_.cm-editor.cm-focused]:outline-none">
         </div>
 
+        <!-- Liquid Orbital Loader (Restricted to Editor Area) -->
+        <div id="orbital-loader" 
+          class="hidden absolute left-0 right-0 bottom-0 top-[49px] z-40 items-center justify-center p-4 backdrop-blur-[1px] transition-all duration-500 overflow-hidden pointer-events-none rounded-b-xl">
+          
+          <div class="relative w-full h-full max-w-[450px] flex items-center justify-center scale-75 md:scale-90">
+             
+             <!-- Central Pulse Glow -->
+             <div class="absolute w-32 h-32 bg-[var(--color-primary-500)]/10 rounded-full blur-[40px] animate-pulse"></div>
+             
+             <!-- Central Loading Hub -->
+             <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="absolute inset-0 border-4 border-t-[var(--color-primary-500)] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+                <div class="absolute inset-2 border-2 border-b-blue-400 border-t-transparent border-r-transparent border-l-transparent rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+                <i data-lucide="cpu" class="w-6 h-6 text-[var(--color-primary-500)] animate-pulse"></i>
+             </div>
+
+             <!-- Orbiting Satellites (Box-Safe Radii) -->
+             <div class="absolute inset-0 pointer-events-none" id="orbital-path">
+                
+                <!-- Satellite 1: npm run dev -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] animate-[spin_8s_linear_infinite]">
+                   <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-white/10 dark:bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-[10px] font-mono text-blue-400 shadow-xl flex items-center gap-2 animate-[spin_8s_linear_infinite_reverse]">
+                      <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
+                      <span>npm run dev</span>
+                   </div>
+                </div>
+
+                <!-- Satellite 2: localhost:3000 -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[310px] h-[310px] animate-[spin_15s_linear_infinite_reverse]">
+                   <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-white/10 dark:bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-[10px] font-mono text-green-400 shadow-xl flex items-center gap-2 animate-[spin_15s_linear_infinite]">
+                      <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                      <span>localhost:3000</span>
+                   </div>
+                </div>
+
+                <!-- Satellite 3: import { AI } -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] animate-[spin_12s_linear_infinite]">
+                   <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/10 dark:bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-[9px] font-mono text-purple-400 shadow-xl animate-[spin_12s_linear_infinite_reverse]">
+                      import { AI }
+                   </div>
+                </div>
+
+                <!-- Satellite 4: async / await -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] animate-[spin_25s_linear_infinite_reverse]">
+                   <div class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/10 dark:bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20 text-[9px] font-mono text-gray-500 shadow-xl animate-[spin_25s_linear_infinite]">
+                      async / await
+                   </div>
+                </div>
+
+                <!-- Satellite 5: HTTP 200 -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] h-[140px] animate-[spin_6s_linear_infinite]">
+                   <div class="absolute bottom-0 left-1/2 -translate-x-1/2 bg-blue-500/20 backdrop-blur-md px-2 py-1 rounded-full border border-blue-500/30 text-[9px] font-mono text-blue-400 shadow-xl animate-[spin_6s_linear_infinite_reverse]">
+                      status:200
+                   </div>
+                </div>
+
+                <!-- Decorative Liquid Circles -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] animate-[spin_40s_linear_infinite]">
+                   <div class="absolute top-10 right-10 w-3 h-3 rounded-full bg-blue-500/40 blur-[2px] animate-pulse"></div>
+                   <div class="absolute bottom-10 left-10 w-2 h-2 rounded-full bg-purple-500/30 blur-[1px] animate-pulse"></div>
+                </div>
+
+             </div>
+
+          </div>
+        </div>
+
         <button id="btn-debug"
           class="absolute bottom-4 right-4 z-10 bg-[var(--color-primary-500)] hover:bg-[var(--color-primary-600)] text-white px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-semibold transition-all active:scale-95 shadow-lg shadow-[var(--color-primary-500)]/25 cursor-pointer disabled:opacity-40 disabled:active:scale-100 disabled:cursor-not-allowed"
           disabled>
@@ -250,12 +317,9 @@
           class="flex flex-col h-full border border-green-400/60 dark:border-green-500/40 rounded-xl overflow-hidden bg-gray-50 dark:bg-[#050505] shadow-sm relative transition-colors duration-200 min-h-[280px]">
           <div
             class="bg-green-50/30 dark:bg-green-500/[0.02] px-5 py-3 border-b border-green-400/40 dark:border-green-500/20 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 rounded-full bg-[var(--color-primary-500)] animate-pulse"></div>
-              <span class="text-[13px] font-bold text-[var(--color-primary-600)] dark:text-[var(--color-primary-400)] tracking-tight uppercase">
-                Fixed Output
-              </span>
-            </div>
+            <span class="text-[13px] font-semibold text-gray-800 dark:text-gray-200 tracking-tight uppercase">
+              Fixed Output
+            </span>
             <button id="btn-copy"
               class="flex items-center gap-1.5 px-2 py-1.5 text-[11px] font-semibold tracking-wide uppercase rounded-md text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               disabled>
@@ -287,12 +351,10 @@
           class="min-h-[280px] flex flex-col border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden bg-white dark:bg-[#050505] shadow-sm transition-colors duration-200">
           <div
             class="bg-gray-50/50 dark:bg-white/[0.02] px-5 py-3 border-b border-gray-200 dark:border-white/10 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 rounded-full bg-[var(--color-primary-500)] animate-pulse"></div>
-              <span class="text-[13px] font-bold text-[var(--color-primary-600)] dark:text-[var(--color-primary-400)] tracking-tight uppercase">
-                Analysis Report
-              </span>
-            </div>
+            <span
+              class="text-[13px] font-semibold text-gray-800 dark:text-gray-200 tracking-tight flex items-center gap-2 uppercase">
+              <span class="w-1.5 h-1.5 rounded-full bg-[var(--color-primary-500)] animate-pulse"></span> Analysis Report
+            </span>
           </div>
           <div class="flex-1 overflow-auto p-5 md:p-6 relative">
             <div id="explanation-content" class="hidden w-full text-gray-800 dark:text-gray-200">
