@@ -1,6 +1,6 @@
 import './index.css';
 import './App.css';
-import { EditorState } from '@codemirror/state';
+import { EditorState, Compartment } from '@codemirror/state';
 import { EditorView, basicSetup } from 'codemirror';
 import { placeholder } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
@@ -36,7 +36,11 @@ const lightTheme = {
 const appDarkTheme = createTheme({ theme: "dark", settings: darkTheme, styles: [{ tag: t.keyword, color: "#c084fc" }, { tag: t.string, color: "#86efac" }, { tag: t.number, color: "#fbbf24" }, { tag: t.comment, color: "#6b7280", fontStyle: "italic" }, { tag: t.function(t.variableName), color: "#60a5fa" }, { tag: t.variableName, color: "#e4e4e7" }, { tag: t.typeName, color: "#67e8f9" }, { tag: t.tagName, color: "#f87171" }, { tag: t.attributeName, color: "#fbbf24" }, { tag: t.operator, color: "#94a3b8" }, { tag: t.punctuation, color: "#94a3b8" }, { tag: t.propertyName, color: "#60a5fa" }, { tag: t.bool, color: "#fbbf24" }, { tag: t.null, color: "#f87171" }, { tag: t.className, color: "#67e8f9" }, { tag: t.definition(t.variableName), color: "#93c5fd" }] });
 const appLightTheme = createTheme({ theme: "light", settings: lightTheme, styles: [{ tag: t.keyword, color: "#7c3aed" }, { tag: t.string, color: "#16a34a" }, { tag: t.number, color: "#d97706" }, { tag: t.comment, color: "#9ca3af", fontStyle: "italic" }, { tag: t.function(t.variableName), color: "#2563eb" }, { tag: t.variableName, color: "#1e293b" }, { tag: t.typeName, color: "#0891b2" }, { tag: t.tagName, color: "#dc2626" }, { tag: t.attributeName, color: "#d97706" }, { tag: t.operator, color: "#64748b" }, { tag: t.punctuation, color: "#64748b" }, { tag: t.propertyName, color: "#2563eb" }, { tag: t.bool, color: "#d97706" }, { tag: t.null, color: "#dc2626" }, { tag: t.className, color: "#0891b2" }, { tag: t.definition(t.variableName), color: "#3b82f6" }] });
 
-const isDark = document.documentElement.className.includes('dark');
+const themeCompartment = new Compartment();
+const isDark = localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+if (isDark) document.documentElement.classList.add('dark');
+else document.documentElement.classList.remove('dark');
+
 const activeTheme = isDark ? appDarkTheme : appLightTheme;
 
 // --- Language Selector Logic (Ported exactly from LanguageSelector.jsx) ---
@@ -124,7 +128,7 @@ const inputState = EditorState.create({
   extensions: [
     basicSetup,
     javascript(),
-    activeTheme,
+    themeCompartment.of(activeTheme),
     EditorView.lineWrapping,
     placeholder("// Paste your buggy code here...\nfunction calculateTotal(items) {\n  return items.map(i => i.price).reduce((a,b) => a+b)\n}"),
     updateListener
@@ -150,7 +154,7 @@ const outputState = EditorState.create({
   extensions: [
     basicSetup,
     javascript(),
-    activeTheme,
+    themeCompartment.of(activeTheme),
     EditorView.lineWrapping,
     EditorState.readOnly.of(true)
   ]
@@ -266,7 +270,7 @@ function initParticles() {
   };
 
   const animate = () => {
-    ctx.fillStyle = document.documentElement.className.includes("dark") ? "rgba(10, 10, 10, 0.2)" : "rgba(255, 255, 255, 0.2)";
+    ctx.fillStyle = document.documentElement.className.includes("dark") ? "rgba(12, 12, 14, 0.2)" : "rgba(255, 255, 255, 0.2)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < particlesArray.length; i++) {
       particlesArray[i].update();
@@ -301,7 +305,26 @@ if (scrollToHowItWorksBtn) {
     document.getElementById('how-it-works-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 }
-
+// --- Theme Toggle Persistence ---
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const isDarkNow = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
+    
+    // Update CodeMirror themes
+    const nextTheme = isDarkNow ? appDarkTheme : appLightTheme;
+    inputEditor.dispatch({
+      effects: themeCompartment.reconfigure(nextTheme)
+    });
+    outputEditor.dispatch({
+      effects: themeCompartment.reconfigure(nextTheme)
+    });
+    
+    // Refresh Lucide icons if any switch
+    if (window.lucide) window.lucide.createIcons();
+  });
+}
 // --- API Execution ---
 const btnDebug = document.getElementById('btn-debug');
 const btnDebugText = document.getElementById('btn-debug-text');

@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/faviconMine.png" />
+  <link rel="icon" type="image/png" href="/favicon_new.png?v=2" />
+  <link rel="apple-touch-icon" href="/favicon_new.png?v=2" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DeFixs — AI Code Debugger</title>
   <!-- AOS CSS -->
@@ -21,13 +22,16 @@
 
     <!-- Navbar (Ported from Navbar.jsx) -->
     <header
-      class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-md transition-colors duration-200">
+      class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-[#0c0c0e]/80 backdrop-blur-md transition-colors duration-200">
       <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
         <div class="flex items-center">
-          <img src="/logo.png" alt="DeFixs Logo" class="w-[60px] h-[60px] object-contain" />
+          <img src="/logo_new.png" alt="DeFixs Logo" class="w-12 h-12 object-contain" />
         </div>
-        <div class="flex items-center gap-1.5">
-          <!-- Settings button removed per original requirement #3 -->
+        <div class="flex items-center gap-2">
+          <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors cursor-pointer border border-gray-200 dark:border-white/10" aria-label="Toggle dark mode">
+            <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+          </button>
         </div>
       </div>
     </header>
@@ -39,7 +43,7 @@
         <div class="text-center space-y-4 px-4 w-full">
           <div class="flex justify-center mb-4" data-aos="fade-down" data-aos-delay="100">
             <div
-              class="inline-flex items-center gap-2.5 px-2.5 py-1.5 rounded-full bg-white dark:bg-[#111] border border-gray-200/80 dark:border-white/10 shadow-sm hover:shadow transition-shadow">
+              class="inline-flex items-center gap-2.5 px-2.5 py-1.5 rounded-full bg-white dark:bg-[#18181b] border border-gray-200/80 dark:border-white/10 shadow-sm hover:shadow transition-shadow">
               <span class="bg-black dark:bg-white text-white dark:text-black p-1.5 rounded-lg shadow-sm">
                 <i data-lucide="bot" class="w-4 h-4"></i>
               </span>
@@ -121,7 +125,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-[1200px] mx-auto">
             <!-- Card 1 -->
             <div
-              class="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-[16px] p-6 flex flex-col gap-4 hover:border-[var(--color-primary-500)]/40 dark:hover:border-[var(--color-primary-500)]/40 hover:shadow-xl hover:shadow-[var(--color-primary-500)]/5 transition-all duration-300 group">
+              class="bg-white dark:bg-[#18181b] border border-gray-200 dark:border-white/10 rounded-[16px] p-6 flex flex-col gap-4 hover:border-[var(--color-primary-500)]/40 dark:hover:border-[var(--color-primary-500)]/40 hover:shadow-xl hover:shadow-[var(--color-primary-500)]/5 transition-all duration-300 group">
               <div
                 class="bg-gray-100 dark:bg-white/5 w-10 h-10 rounded-lg flex items-center justify-center group-hover:bg-[var(--color-primary-500)]/10 transition-colors duration-300">
                 <i data-lucide="bug"
@@ -314,7 +318,7 @@
 
         <!-- Output Panel (Ported closely to OutputPanel.jsx) -->
         <div
-          class="flex flex-col h-full border border-green-400/60 dark:border-green-500/40 rounded-xl overflow-hidden bg-gray-50 dark:bg-[#050505] shadow-sm relative transition-colors duration-200 min-h-[280px]">
+          class="flex flex-col h-full border border-green-400/60 dark:border-green-500/40 rounded-xl overflow-hidden bg-gray-50 dark:bg-[#0c0c0e] shadow-sm relative transition-colors duration-200 min-h-[280px]">
           <div
             class="bg-green-50/30 dark:bg-green-500/[0.02] px-5 py-3 border-b border-green-400/40 dark:border-green-500/20 flex justify-between items-center">
             <span class="text-[13px] font-semibold text-gray-800 dark:text-gray-200 tracking-tight uppercase">
@@ -348,7 +352,7 @@
 
         <!-- Explanation Panel -->
         <div
-          class="min-h-[280px] flex flex-col border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden bg-white dark:bg-[#050505] shadow-sm transition-colors duration-200">
+          class="min-h-[280px] flex flex-col border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden bg-white dark:bg-[#0c0c0e] shadow-sm transition-colors duration-200">
           <div
             class="bg-gray-50/50 dark:bg-white/[0.02] px-5 py-3 border-b border-gray-200 dark:border-white/10 flex justify-between items-center">
             <span
@@ -361,7 +365,7 @@
             </div>
 
             <div id="explanation-empty"
-              class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-[#050505]">
+              class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-white dark:bg-[#0c0c0e]">
               <div class="w-14 h-14 rounded-full bg-blue-50 dark:bg-white/5 flex items-center justify-center mb-4">
                 <i data-lucide="bot"
                   class="w-7 h-7 text-[var(--color-primary-400)] dark:text-[var(--color-primary-500)] opacity-80"></i>
